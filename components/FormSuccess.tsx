@@ -1,18 +1,17 @@
-import React from "react"
-import { AiFillExclamationCircle } from "react-icons/ai"
+import { AiFillCheckCircle } from "react-icons/ai"
 
-type FormErrorProps = {
+type FormSuccessProps = {
   message?: string
 }
 
-const FormError = ({ message }: FormErrorProps) => {
+const FormSuccess = ({ message }: FormSuccessProps) => {
   if (!message) return null
   return (
-    <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive">
-      <AiFillExclamationCircle className="w-4 h-4" />
+    <div className="bg-constructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-constructive">
+      <AiFillCheckCircle className="w-4 h-4" />
       {message}
     </div>
   )
 }
 
-export default FormError
+export default FormSuccess

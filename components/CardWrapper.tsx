@@ -30,16 +30,16 @@ const CardWrapper = ({
   return (
     <Card className={`w-[400px] relative ${className}`}>
       <CardHeader>
-        <CardTitle>{cardTitle}</CardTitle>
+        <CardTitle className="text-2xl">{cardTitle}</CardTitle>
         <CardDescription>{cardDescription}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
       {cardFooterLink && (
-        <CardFooter className="flex items-center justify-center gap-x-1">
+        <CardFooter className="flex items-center justify-center gap-x-1 text-sm">
           {cardFooterDescription && <span>{cardFooterDescription}</span>}
           <Link
             href={cardFooterLink}
-            className="underline text-blue-500 hover:text-blue-700"
+            className="underline text-red hover:text-red-500"
           >
             {cardFooterLinkTitle}
           </Link>

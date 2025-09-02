@@ -6,10 +6,10 @@ import FormError from "../FormError"
 import { useRouter } from "next/navigation"
 import { useAuthState } from "@/app/hooks/useAuthState"
 import { useForm } from "react-hook-form"
-import SignInSchema from "@/utils/zod/signin-schema"
+import SignUpSchema from "@/utils/zod/signup-schema"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "@/lib/auth_client"
+import { signUp, signIn } from "@/lib/auth_client"
 import {
   Form,
   FormControl,
@@ -23,23 +23,26 @@ import { Input } from "../ui/input"
 import OrDivider from "../OrDivider"
 import { FcGoogle } from "react-icons/fc"
 
-const SignIn = () => {
+const SignUp = () => {
   const router = useRouter()
   const { error, success, loading, setError, setSuccess, setLoading, reset } =
     useAuthState()
 
-  const form = useForm<z.infer<typeof SignInSchema>>({
-    resolver: zodResolver(SignInSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
+  const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
     try {
-      await signIn.email(
+      await signUp.email(
         {
+          name: `${values.firstname} ${values.lastname}`,
           email: values.email,
           password: values.password,
         },
@@ -52,8 +55,7 @@ const SignIn = () => {
             setLoading(true)
           },
           onSuccess: () => {
-            setSuccess("Signed in successfully")
-            setTimeout(() => router.replace("/"), 1000)
+            setSuccess("Check ur mail to verify your account")
           },
           onError: (ctx) => {
             setError(ctx.error.message)
@@ -66,7 +68,7 @@ const SignIn = () => {
     }
   }
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignUp = async () => {
     await signIn.social({
       provider: "google",
       callbackURL: "/",
@@ -75,15 +77,55 @@ const SignIn = () => {
 
   return (
     <CardWrapper
-      cardTitle="Sign in"
-      cardDescription="Hey! Welcome back."
-      cardFooterDescription="Don't have an account?"
-      cardFooterLink="/signup"
-      cardFooterLinkTitle="Sign up"
+      cardTitle="Sign up"
+      cardDescription="New here? Let's get you started."
+      cardFooterDescription="Already have an account?"
+      cardFooterLink="/signin"
+      cardFooterLinkTitle="Sign in"
     >
       {/* Email/Password Auth */}
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      type="text"
+                      placeholder="John"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="lastname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      type="text"
+                      placeholder="Doe"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="email"
@@ -126,7 +168,7 @@ const SignIn = () => {
           <FormSuccess message={success} />
 
           <Button disabled={loading} type="submit" className="w-full">
-            Sign in
+            Sign up
           </Button>
         </form>
       </Form>
@@ -136,7 +178,7 @@ const SignIn = () => {
       {/* Google Auth */}
       <Button
         variant={"outline"}
-        onClick={handleGoogleSignIn}
+        onClick={handleGoogleSignUp}
         className="w-full"
       >
         <FcGoogle />
@@ -146,4 +188,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignUp

@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 import SignInSchema from "@/utils/zod/signin-schema"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "@/lib/auth_client"
+import { signIn } from "@/lib/auth/auth_client"
 import {
   Form,
   FormControl,

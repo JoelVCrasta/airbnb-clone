@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id            String        @id @map("_id") @default(auto()) @db.ObjectId
+  id            String        @id @map("_id")
   name          String
   email         String
   emailVerified Boolean
@@ -26,14 +26,14 @@ model User {
 }
 
 model Session {
-  id        String    @id @map("_id") @default(auto()) @db.ObjectId
+  id        String    @id @map("_id")
   expiresAt DateTime
   token     String
   createdAt DateTime
   updatedAt DateTime
   ipAddress String?
   userAgent String?
-  userId    String    @db.ObjectId
+  userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
@@ -41,10 +41,10 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @map("_id") @default(auto()) @db.ObjectId
+  id                    String    @id @map("_id")
   accountId             String
   providerId            String
-  userId                String    @db.ObjectId
+  userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
@@ -60,7 +60,7 @@ model Account {
 }
 
 model Verification {
-  id         String    @id @map("_id") @default(auto()) @db.ObjectId
+  id         String    @id @map("_id")
   identifier String
   value      String
   expiresAt  DateTime
@@ -72,7 +72,7 @@ model Verification {
 
 model Listing {
   id            String        @id @map("_id") @default(auto()) @db.ObjectId
-  userId        String        @db.ObjectId
+  userId        String
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   title         String
   description   String
@@ -93,7 +93,7 @@ model Listing {
 
 model Reservation {
   id            String    @id @map("_id") @default(auto()) @db.ObjectId
-  userId        String    @db.ObjectId
+  userId        String
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   listingId     String    @db.ObjectId
   listing       Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)

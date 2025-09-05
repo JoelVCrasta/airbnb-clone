@@ -1,5 +1,5 @@
 import SignIn from "@/components/auth/signin"
-import { getSession } from "@/lib/get_session"
+import { getSession } from "@/lib/auth/get_session"
 import { redirect } from "next/navigation"
 
 const SignInPage = async () => {

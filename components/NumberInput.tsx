@@ -3,8 +3,8 @@ import { IconType } from "react-icons"
 import { useState } from "react"
 
 interface NumberInputProps {
-  value: number | ""
-  onChange: (value: number | "") => void
+  value: string
+  onChange: (value: string) => void
   placeholder?: string
   required?: boolean
   icon?: IconType
@@ -38,7 +38,7 @@ const NumberInput = ({
     if (min !== undefined && number < min) number = min
     if (max !== undefined && number > max) number = max
 
-    onChange(number)
+    onChange(number.toString())
   }
 
   return (

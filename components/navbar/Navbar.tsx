@@ -4,7 +4,7 @@ import { useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { useSession, signOut } from "@/lib/auth_client"
+import { useSession, signOut } from "@/lib/auth/auth_client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -15,18 +15,20 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { Menu } from "lucide-react"
+import useRentModal from "@/app/hooks/useRentModal"
 
 const Navbar = () => {
   const router = useRouter()
   const { data: session, isPending } = useSession()
+  const RentModal = useRentModal()
 
   const handleListing = useCallback(() => {
     if (!session) {
       router.push("/sign-up")
     } else {
-      alert("TODO: Open rent modal")
+      RentModal.onOpen()
     }
-  }, [session, router])
+  }, [session, router, RentModal])
 
   return (
     <header className="px-4 mx-auto sm:px-6 lg:px-8 border-b-[1px] border-b-gray-200">
@@ -41,7 +43,7 @@ const Navbar = () => {
         <div className="font-geist flex items-center justify-center space-x-4 lg:space-x-10">
           <Button
             variant="outline"
-            className="rounded-full"
+            className="rounded-full hidden md:inline-block"
             onClick={handleListing}
           >
             List your home
@@ -66,6 +68,12 @@ const Navbar = () => {
                 <DropdownMenuLabel>
                   {session.user.name ?? "My Account"}
                 </DropdownMenuLabel>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem onClick={handleListing}>
+                  List your home
+                </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
 

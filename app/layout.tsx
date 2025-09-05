@@ -4,6 +4,7 @@ import "./globals.css"
 import Navbar from "@/components/navbar/Navbar"
 import ClientOnly from "@/components/ClientOnly"
 import Categories from "@/components/navbar/Categories"
+import RentModal from "@/components/modal/RentModal"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <ClientOnly>
           <Navbar />
+          <RentModal />
         </ClientOnly>
         {children}
       </body>

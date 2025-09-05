@@ -11,49 +11,82 @@ interface MapProps {
 
 const Map = ({ center }: MapProps) => {
   const mapInstanceRef = useRef<maplibregl.Map | null>(null)
+  const markerRef = useRef<maplibregl.Marker | null>(null)
   const mapContainerRef = useRef<HTMLDivElement | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(true)
 
   const region = process.env.NEXT_PUBLIC_AWS_REGION as string
   const mapStyle = "Monochrome"
   const apiKey = process.env.NEXT_PUBLIC_LOCATION_API_KEY as string
   const styleUrl = `https://maps.geo.${region}.amazonaws.com/v2/styles/${mapStyle}/descriptor?key=${apiKey}`
 
-  useEffect(() => {
-    async function loadMap() {
-      if (mapContainerRef.current) {
-        mapInstanceRef.current = new maplibregl.Map({
-          container: mapContainerRef.current,
-          style: styleUrl,
-          center: center || [-74.006, 40.7128],
-          zoom: 3,
-          attributionControl: false,
-        })
-      }
-
-      setLoading(false)
+  // Helper to (re)place marker
+  const placeMarker = (pos?: [number, number]) => {
+    // Remove existing marker if any
+    if (markerRef.current) {
+      markerRef.current.remove()
+      markerRef.current = null
     }
+    if (pos && mapInstanceRef.current) {
+      markerRef.current = new maplibregl.Marker()
+        .setLngLat(pos)
+        .addTo(mapInstanceRef.current)
+    }
+  }
 
-    loadMap()
+  // Init map once
+  useEffect(() => {
+    if (!mapContainerRef.current) return
+    const map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: styleUrl,
+      center: center || [-74.006, 40.7128],
+      zoom: 3,
+      attributionControl: false,
+    })
+    mapInstanceRef.current = map
+    map.on("load", () => {
+      setLoading(false)
+      placeMarker(center)
+    })
+
+    return () => {
+      if (markerRef.current) {
+        markerRef.current.remove()
+        markerRef.current = null
+      }
+      map.remove()
+    }
   }, [])
 
+  // Animate and update marker when center changes
+  useEffect(() => {
+    if (!mapInstanceRef.current) return
+    if (!center) {
+      placeMarker(undefined)
+      return
+    }
+    mapInstanceRef.current.flyTo({
+      center,
+      zoom: 5,
+      speed: 1.1,
+      curve: 1.4,
+      essential: true,
+    })
+    placeMarker(center)
+  }, [center])
+
   return (
-    <>
-      <div
-        id="map"
-        ref={mapContainerRef}
-        className="w-full h-[400px] rounded-lg border-[1px] border-gray-300"
-      >
-        {loading && (
-          <div className="flex items-center justify-center w-full h-full">
-            <AiOutlineLoading
-              size={40}
-              className="animate-spin text-rose-500"
-            />
-          </div>
-        )}
-      </div>
-    </>
+    <div
+      ref={mapContainerRef}
+      className="w-full h-[400px] rounded-lg border border-gray-300 relative"
+    >
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60">
+          <AiOutlineLoading size={40} className="animate-spin text-rose-500" />
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -125,8 +125,8 @@ const RentModal = () => {
 
       const payload = {
         userId: session.data.user.id,
-        title: data.title,
-        description: data.description,
+        title: String(data.title).trim(),
+        description: String(data.description).trim(),
         imageUrls: uploadedUrls,
         category: data.category,
         roomCount: data.roomCount,
@@ -192,13 +192,7 @@ const RentModal = () => {
               value={locationWatch}
               onChange={(value) => setFormValue("location", value)}
             />
-            <Map
-              center={
-                locationWatch?.latlng
-                  ? [locationWatch.latlng[1], locationWatch.latlng[0]] // [lng, lat]
-                  : undefined
-              }
-            />
+            <Map center={locationWatch?.latlng} />
           </div>
         )
 

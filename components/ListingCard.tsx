@@ -1,16 +1,17 @@
 "use client"
 
-import { Listing, Reservation } from "@/utils/types"
+import { Reservation, SafeListing, SafeUser } from "@/utils/types"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useCallback, MouseEvent, useMemo } from "react"
 import { format } from "date-fns"
 import HeartButton from "@/components/HeartButton"
 import { Button } from "./ui/button"
+import useCountries from "@/app/hooks/useCountries"
 
 interface ListingCardProps {
-  listing: Listing
-  currentUser?: any | null
+  listing: SafeListing
+  currentUser?: SafeUser | null
   reservation?: Reservation
   onAction?: (id: string) => void
   disabled?: boolean
@@ -28,6 +29,8 @@ const ListingCard = ({
   actionId = "",
 }: ListingCardProps) => {
   const router = useRouter()
+  const { getByValue } = useCountries()
+  const location = getByValue(listing.location)
 
   const handleCancel = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -73,6 +76,7 @@ const ListingCard = ({
             src={listing.imageUrls[0]}
             className="object-cover h-full w-full group-hover:scale-110 transition"
             fill
+            priority
           />
 
           <div className="absolute top-3 right-3">
@@ -80,22 +84,27 @@ const ListingCard = ({
           </div>
         </div>
 
-        <div className="font-semibold text-lg">{listing.location}</div>
+        <div className="mx-1">
+          <div className="font-semibold text-sm">
+            {location?.label},{" "}
+            <span className="text-neutral-500">{location?.region}</span>
+          </div>
 
-        <div className="font-light text-neutral-500">
-          {reservationDate || listing.category}
+          <div className="font-light text-neutral-500 text-sm">
+            {reservationDate || listing.category}
+          </div>
+
+          <div className="flex items-center text-sm gap-1">
+            <div className="semibold">$ {price}</div>
+            {!reservation && <div className="font-light">/ night</div>}
+          </div>
+
+          {onAction && actionLabel && (
+            <Button onAbort={handleCancel} disabled={disabled}>
+              {actionLabel}
+            </Button>
+          )}
         </div>
-
-        <div className="flex items-center gap-1">
-          <div className="semibold">$ {price}</div>
-          {!reservation && <div className="font-light">night</div>}
-        </div>
-
-        {onAction && actionLabel && (
-          <Button onAbort={handleCancel} disabled={disabled}>
-            {actionLabel}
-          </Button>
-        )}
       </div>
     </div>
   )

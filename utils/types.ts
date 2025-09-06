@@ -1,3 +1,5 @@
+import { User as BAUser } from "better-auth"
+
 export interface User {
   id: string
   name: string
@@ -9,9 +11,13 @@ export interface User {
   sessions?: Session[]
   accounts?: Account[]
   listings?: Listing[]
+  favouriteIds?: string[]
   reservations?: Reservation[]
 }
 
+export interface SafeUser extends BAUser {
+  favouriteIds: string[]
+}
 export interface Session {
   id: string
   expiresAt: Date
@@ -68,6 +74,11 @@ export interface Listing {
   updatedAt: Date
 }
 
+export type SafeListing = Omit<Listing, "createdAt" | "updatedAt"> & {
+  createdAt: string
+  updatedAt: string
+}
+
 export interface Reservation {
   id: string
   userId: string
@@ -87,4 +98,15 @@ export type CountrySelectType = {
   latlng: [number, number]
   region: string
   value: string
+}
+
+export interface SearchListingParams {
+  userId?: string
+  guestCount?: number
+  roomCount?: number
+  bathroomCount?: number
+  checkIn?: string
+  checkOut?: string
+  location?: string
+  category?: string
 }

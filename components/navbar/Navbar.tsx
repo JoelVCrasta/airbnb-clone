@@ -17,9 +17,12 @@ import {
 import { Menu } from "lucide-react"
 import useRentModal from "@/app/hooks/useRentModal"
 
-const Navbar = () => {
+interface NavbarProps {
+  session: ReturnType<typeof useSession>["data"]
+}
+
+const Navbar = ({ session }: NavbarProps) => {
   const router = useRouter()
-  const { data: session, isPending } = useSession()
   const RentModal = useRentModal()
 
   const handleListing = useCallback(() => {
@@ -50,7 +53,7 @@ const Navbar = () => {
           </Button>
 
           {/* Dropdown */}
-          {isPending ? null : session ? (
+          {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant={"ghost"} className="rounded-full">

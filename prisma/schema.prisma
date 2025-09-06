@@ -20,13 +20,14 @@ model User {
   accounts      Account[]
   listings      Listing[]
   reservations  Reservation[]
+  favouriteIds  String[]      @default([])
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String    @id @map("_id")
+  id        String   @id @map("_id")
   expiresAt DateTime
   token     String
   createdAt DateTime
@@ -34,7 +35,7 @@ model Session {
   ipAddress String?
   userAgent String?
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@map("session")
@@ -90,18 +91,17 @@ model Listing {
   @@map("listing")
 }
 
-
 model Reservation {
-  id            String    @id @map("_id") @default(auto()) @db.ObjectId
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listingId     String    @db.ObjectId
-  listing       Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
-  checkIn       DateTime
-  checkOut      DateTime
-  totalPrice    Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId  String   @db.ObjectId
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  checkIn    DateTime
+  checkOut   DateTime
+  totalPrice Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("reservation")
 }

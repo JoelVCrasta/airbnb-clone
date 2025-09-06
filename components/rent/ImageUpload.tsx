@@ -37,8 +37,6 @@ const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
 
   return (
     <>
-      <Toaster position="bottom-center" />
-
       <Dropzone onDrop={onDrop} accept={{ "image/*": [] }}>
         {({ getRootProps, getInputProps }) => (
           <section>

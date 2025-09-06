@@ -1,7 +1,4 @@
-"use client"
-
-/* import useFavorite from "@/app/hooks/useFavorite"
-import { cn } from "@/app/utils/helper" */
+import useFavourite from "@/app/hooks/useFavourite"
 import React from "react"
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
 
@@ -11,15 +8,10 @@ interface HeartButtonProps {
 }
 
 const HeartButton = ({ listingId, currentUser }: HeartButtonProps) => {
-  /* const { hasFavorited, toggleFavorite } = useFavorite({
+  const { hasFavorited, toggleFavorite } = useFavourite({
     listingId,
     currentUser,
-  }) */
-
-  const hasFavorited = false
-  const toggleFavorite = () => {
-    console.log("toggleFavorite")
-  }
+  })
 
   return (
     <div

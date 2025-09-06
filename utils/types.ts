@@ -84,7 +84,7 @@ export interface Reservation {
 export type CountrySelectType = {
   flag: string
   label: string
-  latlng: number[]
+  latlng: [number, number]
   region: string
   value: string
 }

@@ -27,6 +27,7 @@ const Map = ({ center }: MapProps) => {
       markerRef.current.remove()
       markerRef.current = null
     }
+
     if (pos && mapInstanceRef.current) {
       markerRef.current = new maplibregl.Marker()
         .setLngLat(pos)
@@ -66,6 +67,7 @@ const Map = ({ center }: MapProps) => {
       placeMarker(undefined)
       return
     }
+
     mapInstanceRef.current.flyTo({
       center,
       zoom: 5,
@@ -79,11 +81,15 @@ const Map = ({ center }: MapProps) => {
   return (
     <div
       ref={mapContainerRef}
-      className="w-full h-[400px] rounded-lg border border-gray-300 relative"
+      className="relative w-full h-[400px] overflow-hidden rounded-md"
     >
+      {/* Skeleton Loader Overlay */}
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60">
-          <AiOutlineLoading size={40} className="animate-spin text-rose-500" />
+        <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+          <AiOutlineLoading
+            size={36}
+            className="animate-spin text-rose-500 opacity-80"
+          />
         </div>
       )}
     </div>

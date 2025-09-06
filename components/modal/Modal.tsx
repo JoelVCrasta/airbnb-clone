@@ -39,7 +39,7 @@ const Modal = ({
 }: ModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg sm:max-w-3xl max-h-screen flex flex-col">
+      <DialogContent className="max-w-lg sm:max-w-2xl max-h-screen flex flex-col">
         {/* Header*/}
         <DialogHeader className="shrink-0">
           {title && <DialogTitle>{title}</DialogTitle>}
@@ -59,11 +59,16 @@ const Modal = ({
                 variant="outline"
                 disabled={disabled}
                 onClick={secondaryButton}
+                className="flex-1 py-6"
               >
                 {secondaryButtonLabel}
               </Button>
             )}
-            <Button disabled={disabled} onClick={onSubmit}>
+            <Button
+              disabled={disabled}
+              onClick={onSubmit}
+              className="flex-1 py-6"
+            >
               {buttonLabel}
             </Button>
           </div>

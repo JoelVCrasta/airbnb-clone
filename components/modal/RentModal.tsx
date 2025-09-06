@@ -1,11 +1,10 @@
 "use client"
 
-import { use, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useSession } from "@/lib/auth/auth_client"
 import { useRouter } from "next/navigation"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { rentSchema } from "@/utils/zod/rent-schema"
 import axios from "axios"
 import { getSignedUrls, uploadFilesToS3 } from "@/lib/listing"
 import z from "zod"
@@ -19,8 +18,7 @@ import dynamic from "next/dynamic"
 import CountInput from "../rent/CountInput"
 import ImageUpload from "../rent/ImageUpload"
 import { LuDollarSign } from "react-icons/lu"
-import TextInput from "../TextInput"
-import NumberInput from "../NumberInput"
+import CustomInput from "../CustomInput"
 
 enum STEPS {
   CATEGORY = 0,
@@ -34,7 +32,7 @@ enum STEPS {
 const RentModal = () => {
   const session = useSession()
   const router = useRouter()
-  const { isOpen, onOpen, onClose } = useRentModal()
+  const { isOpen, onClose } = useRentModal()
   const [loading, setLoading] = useState<boolean>(false)
   const [step, setStep] = useState<STEPS>(STEPS.CATEGORY)
 
@@ -43,6 +41,7 @@ const RentModal = () => {
     setValue,
     reset,
     handleSubmit,
+    register,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -54,7 +53,7 @@ const RentModal = () => {
       roomCount: 1,
       bathroomCount: 1,
       guestCount: 1,
-      price: "",
+      price: 1,
     },
   })
 
@@ -107,19 +106,6 @@ const RentModal = () => {
     }
 
     try {
-      rentSchema.parse(data)
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        toast.error(error.issues[0].message)
-      } else {
-        toast.error("Invalid input data.")
-      }
-
-      setLoading(false)
-      return
-    }
-
-    try {
       const urls = await getSignedUrls(data.images, "listing-images")
       const uploadedUrls = await uploadFilesToS3(data.images, urls)
 
@@ -133,7 +119,7 @@ const RentModal = () => {
         bathroomCount: data.bathroomCount,
         guestCount: data.guestCount,
         price: parseInt(data.price, 10),
-        location,
+        location: data.location,
       }
 
       const res = await axios.post("/api/add-listings", payload)
@@ -155,7 +141,13 @@ const RentModal = () => {
     }
   }
 
-  const Map = useMemo(() => dynamic(() => import("../Map"), { ssr: false }), [])
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("../Map"), {
+        ssr: false,
+      }),
+    []
+  )
 
   const body = useMemo(() => {
     switch (step) {
@@ -192,7 +184,14 @@ const RentModal = () => {
               value={locationWatch}
               onChange={(value) => setFormValue("location", value)}
             />
-            <Map center={locationWatch?.latlng} />
+            <Map
+              center={
+                locationWatch?.latlng && [
+                  locationWatch?.latlng[1],
+                  locationWatch?.latlng[0],
+                ]
+              }
+            />
           </div>
         )
 
@@ -248,19 +247,22 @@ const RentModal = () => {
               title="Describe your place"
               subtitle="What makes your place unique?"
             />
-
-            <TextInput
-              value={titleWatch}
-              onChange={(value) => setFormValue("title", value)}
-              placeholder="Title"
+            <CustomInput
+              id="title"
+              label="Title"
+              disabled={loading}
               required
+              register={register}
+              errors={errors}
             />
-
-            <TextInput
-              value={descriptionWatch}
-              onChange={(value) => setFormValue("description", value)}
-              placeholder="Description"
+            <hr />
+            <CustomInput
+              id="description"
+              label="Description"
+              disabled={loading}
               required
+              register={register}
+              errors={errors}
             />
           </div>
         )
@@ -273,14 +275,15 @@ const RentModal = () => {
               subtitle="How much do you want to charge?"
             />
 
-            <NumberInput
-              value={priceWatch}
-              onChange={(value) => setFormValue("price", value)}
-              placeholder="Price per night"
+            <CustomInput
+              id="price"
+              label="Price"
+              type="number"
+              disabled={loading}
               required
+              register={register}
+              errors={errors}
               icon={LuDollarSign}
-              min={1}
-              max={100000}
             />
           </div>
         )

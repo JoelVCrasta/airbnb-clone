@@ -1,6 +1,6 @@
 "use client"
 
-import { Reservation, SafeListing, SafeUser } from "@/utils/types"
+import { SafeReservation, SafeListing, SafeUser } from "@/utils/types"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useCallback, MouseEvent, useMemo } from "react"
@@ -12,7 +12,7 @@ import useCountries from "@/app/hooks/useCountries"
 interface ListingCardProps {
   listing: SafeListing
   currentUser?: SafeUser | null
-  reservation?: Reservation
+  reservation?: SafeReservation
   onAction?: (id: string) => void
   disabled?: boolean
   actionLabel?: string
@@ -100,7 +100,11 @@ const ListingCard = ({
           </div>
 
           {onAction && actionLabel && (
-            <Button onAbort={handleCancel} disabled={disabled}>
+            <Button
+              onClick={handleCancel}
+              disabled={disabled}
+              className="mt-2 w-full"
+            >
               {actionLabel}
             </Button>
           )}

@@ -17,10 +17,16 @@ const useCountries = () => {
   const getByValue = (value: string) =>
     formattedCountries.find((c) => c.value === value)
 
+  const getCoordsByValue = (value: string) => {
+    const loc = formattedCountries.find((c) => c.value === value)?.latlng
+    return loc && ([loc[1], loc[0]] as [number, number])
+  }
+
   return {
     getAll,
     getByLabel,
     getByValue,
+    getCoordsByValue,
   }
 }
 

@@ -1,51 +1,12 @@
 import { User as BAUser } from "better-auth"
-
-export interface User {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string
-  createdAt: Date
-  updatedAt: Date
-  sessions?: Session[]
-  accounts?: Account[]
-  listings?: Listing[]
-  favouriteIds?: string[]
-  reservations?: Reservation[]
-}
+import { User as PCUser, Reservation } from "@prisma/client"
+import { Listing } from "@prisma/client"
 
 export interface SafeUser extends BAUser {
   favouriteIds: string[]
 }
-export interface Session {
-  id: string
-  expiresAt: Date
-  token: string
-  createdAt: Date
-  updatedAt: Date
-  ipAddress?: string
-  userAgent?: string
-  userId: string
-  user?: User
-}
 
-export interface Account {
-  id: string
-  accountId: string
-  providerId: string
-  userId: string
-  user?: User
-  accessToken?: string
-  refreshToken?: string
-  idToken?: string
-  accessTokenExpiresAt?: Date
-  refreshTokenExpiresAt?: Date
-  scope?: string
-  password?: string
-  createdAt: Date
-  updatedAt: Date
-}
+export type SafeUserFromPrisma = Omit<PCUser, "createdAt" | "updatedAt">
 
 export interface Verification {
   id: string
@@ -56,40 +17,20 @@ export interface Verification {
   updatedAt?: Date
 }
 
-export interface Listing {
-  id: string
-  userId: string
-  user?: User
-  title: string
-  description: string
-  imageUrls: string[]
-  category: string
-  roomCount: number
-  bathroomCount: number
-  guestCount: number
-  price: number
-  location: string
-  reservations?: Reservation[]
-  createdAt: Date
-  updatedAt: Date
-}
-
 export type SafeListing = Omit<Listing, "createdAt" | "updatedAt"> & {
   createdAt: string
   updatedAt: string
 }
 
-export interface Reservation {
-  id: string
-  userId: string
-  user?: User
-  listingId: string
-  listing?: Listing
-  checkIn: Date
-  checkOut: Date
-  totalPrice: number
-  createdAt: Date
-  updatedAt: Date
+export type SafeReservation = Omit<
+  Reservation,
+  "createdAt" | "updatedAt" | "checkIn" | "checkOut"
+> & {
+  createdAt: string
+  updatedAt: string
+  checkIn: string
+  checkOut: string
+  listing: SafeListing
 }
 
 export type CountrySelectType = {

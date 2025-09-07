@@ -3,7 +3,6 @@
 import CardWrapper from "@/components/CardWrapper"
 import FormSuccess from "../FormSuccess"
 import FormError from "../FormError"
-import { useRouter } from "next/navigation"
 import { useAuthState } from "@/app/hooks/useAuthState"
 import { useForm } from "react-hook-form"
 import SignUpSchema from "@/utils/zod/signup-schema"
@@ -24,7 +23,6 @@ import OrDivider from "../OrDivider"
 import { FcGoogle } from "react-icons/fc"
 
 const SignUp = () => {
-  const router = useRouter()
   const { error, success, loading, setError, setSuccess, setLoading, reset } =
     useAuthState()
 

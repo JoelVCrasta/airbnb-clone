@@ -2,10 +2,11 @@ import { getSession } from "@/lib/auth/get_session"
 import prisma from "@/db"
 import { NextRequest, NextResponse } from "next/server"
 
-interface Params {
-  reservationId?: string
+type Context = {
+  params: Promise<{ reservationId: string }>
 }
-export async function DELETE(req: NextRequest, { params }: { params: Params }) {
+
+export async function DELETE(req: NextRequest, context: Context) {
   try {
     const session = await getSession()
 
@@ -16,7 +17,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Params }) {
       )
     }
 
-    const { reservationId } = params
+    const { reservationId } = await context.params
     if (!reservationId || typeof reservationId !== "string") {
       return NextResponse.json(
         { error: "Invalid reservation ID." },
@@ -34,7 +35,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Params }) {
       },
     })
     return NextResponse.json({ reservation }, { status: 200 })
-  } catch (err) {
+  } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

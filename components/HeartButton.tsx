@@ -1,10 +1,11 @@
 import useFavourite from "@/app/hooks/useFavourite"
+import { SafeUser } from "@/utils/types"
 import React from "react"
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
 
 interface HeartButtonProps {
   listingId: string
-  currentUser?: any | null
+  currentUser?: SafeUser | null
 }
 
 const HeartButton = ({ listingId, currentUser }: HeartButtonProps) => {

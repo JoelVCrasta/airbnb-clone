@@ -75,6 +75,7 @@ export async function getListings(
 
     return safeListings
   } catch (error) {
+    console.error(error)
     return []
   }
 }

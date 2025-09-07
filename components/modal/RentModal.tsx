@@ -7,7 +7,6 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import axios from "axios"
 import { getSignedUrls, uploadFilesToS3 } from "@/lib/listing"
-import z from "zod"
 import Heading from "../Heading"
 import { categories } from "../navbar/Categories"
 import Modal from "./Modal"
@@ -300,6 +299,10 @@ const RentModal = () => {
     descriptionWatch,
     priceWatch,
     Map,
+    setFormValue,
+    register,
+    errors,
+    loading,
   ])
 
   return (

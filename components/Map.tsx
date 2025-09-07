@@ -58,7 +58,7 @@ const Map = ({ center }: MapProps) => {
       }
       map.remove()
     }
-  }, [])
+  }, [styleUrl, center])
 
   // Animate and update marker when center changes
   useEffect(() => {

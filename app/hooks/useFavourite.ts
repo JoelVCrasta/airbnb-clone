@@ -1,6 +1,5 @@
 import { SafeUser } from "@/utils/types"
 import axios from "axios"
-import { User } from "better-auth"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import { toast } from "sonner"
@@ -45,6 +44,7 @@ const useFavourite = ({ listingId, currentUser }: UseFavourite) => {
           toast.success("Added to favourites")
         }
       } catch (error) {
+        console.log(error)
         toast.error("Something went wrong")
       }
     },

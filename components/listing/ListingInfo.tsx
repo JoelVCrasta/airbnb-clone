@@ -73,7 +73,7 @@ const ListingInfo = ({
 
       <hr />
 
-      {/* <Map center={cordinates} /> */}
+      <Map center={cordinates} />
     </div>
   )
 }

@@ -2,16 +2,16 @@ import prisma from "@/db"
 import { getSession } from "@/lib/auth/get_session"
 import { NextRequest, NextResponse } from "next/server"
 
-interface Params {
-  listingId?: string
+type Context = {
+  params: Promise<{ listingId: string }>
 }
 
 export async function POST(
   res: NextRequest,
-  { params }: { params: Params }
+  context: Context
 ): Promise<NextResponse> {
   try {
-    const { listingId } = await params
+    const { listingId } = await context.params
     const session = await getSession()
     const currentUser = session?.user
 
@@ -43,9 +43,9 @@ export async function POST(
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: Params }) {
+export async function DELETE(req: NextRequest, context: Context) {
   try {
-    const { listingId } = params
+    const { listingId } = await context.params
     const session = await getSession()
     const currentUser = session?.user
 

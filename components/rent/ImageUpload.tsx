@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { toast, Toaster } from "sonner"
+import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 
 const MAX_FILES = 5

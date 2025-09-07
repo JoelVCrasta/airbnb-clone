@@ -3,7 +3,7 @@
 import Container from "@/components/Container"
 import PageHeading from "@/components/PageHeading"
 import ListingCard from "@/components/ListingCard"
-import { SafeListing, SafeReservation, SafeUser } from "@/utils/types"
+import { SafeListing, SafeReservation } from "@/utils/types"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"

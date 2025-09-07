@@ -122,7 +122,7 @@ const RentModal = () => {
         location: data.location,
       }
 
-      const res = await axios.post("/api/add-listings", payload)
+      const res = await axios.post("/api/listing", payload)
       if (res.data.success) {
         toast.success("Listing created successfully!")
         router.refresh()

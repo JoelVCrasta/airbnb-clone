@@ -67,8 +67,8 @@ const Navbar = ({ session }: NavbarProps) => {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuLabel className="font-semibold">
                   {session.user.name ?? "My Account"}
                 </DropdownMenuLabel>
 
@@ -80,13 +80,23 @@ const Navbar = ({ session }: NavbarProps) => {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={() => router.push("/profile")}>
-                  Profile
+                <DropdownMenuItem onClick={() => router.push("/trips")}>
+                  My trips
                 </DropdownMenuItem>
 
-                <DropdownMenuItem onClick={() => router.push("/dashboard")}>
-                  Dashboard
+                <DropdownMenuItem onClick={() => router.push("/favourites")}>
+                  My favourites
                 </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => router.push("/reservations")}>
+                  My reservations
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => router.push("/listings")}>
+                  My listings
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
 
                 <DropdownMenuItem onClick={() => signOut()}>
                   Sign out

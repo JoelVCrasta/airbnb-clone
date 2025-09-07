@@ -1,8 +1,8 @@
 import prisma from "@/db"
 import { getSession } from "@/lib/auth/get_session"
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const session = await getSession()
 
@@ -41,7 +41,7 @@ export async function POST(req: Request): Promise<NextResponse> {
   } catch (error) {
     console.error(error)
     return NextResponse.json(
-      { error: "Something went wrong." },
+      { error: "Internal server error" },
       { status: 500 }
     )
   }

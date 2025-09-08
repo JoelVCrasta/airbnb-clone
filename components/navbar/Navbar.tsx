@@ -27,7 +27,7 @@ const Navbar = ({ session }: NavbarProps) => {
 
   const handleListing = useCallback(() => {
     if (!session) {
-      router.push("/sign-up")
+      router.push("/signup")
     } else {
       RentModal.onOpen()
     }

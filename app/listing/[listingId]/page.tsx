@@ -9,7 +9,7 @@ interface Params {
   listingId: string
 }
 
-const ListingPage = async ({ params }: { params: Params }) => {
+const ListingPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params
 
   const [listing, reservations, session] = await Promise.all([

@@ -1,22 +1,8 @@
 "use client"
 
-import { useCallback } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { useSession, signOut } from "@/lib/auth/auth_client"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { Menu } from "lucide-react"
+import { useSession } from "@/lib/auth/auth_client"
 import useRentModal from "@/app/hooks/useRentModal"
-import Image from "next/image"
 import Search from "./Search"
 import Logo from "./Logo"
 import User from "./User"

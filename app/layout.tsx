@@ -6,6 +6,7 @@ import ClientOnly from "@/components/ClientOnly"
 import RentModal from "@/components/modal/RentModal"
 import { getSession } from "@/lib/auth/get_session"
 import { Toaster } from "sonner"
+import SearchModal from "@/components/modal/SearchModal"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default async function RootLayout({
           <Toaster position="bottom-center" />
           <Navbar session={session} />
           <RentModal />
+          <SearchModal />
         </ClientOnly>
         {children}
       </body>

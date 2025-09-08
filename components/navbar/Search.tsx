@@ -1,45 +1,44 @@
 "use client"
 
 import useCountries from "@/app/hooks/useCountries"
-//import useSearchModal from "@/app/hooks/useSearchModal"
+import useSearchModal from "@/app/hooks/useSearchModal"
 import { differenceInDays } from "date-fns"
 import { useSearchParams } from "next/navigation"
 import React, { useMemo } from "react"
 import { BiSearch } from "react-icons/bi"
 
 const Search = () => {
-  //const searchModal = useSearchModal()
+  const searchModal = useSearchModal()
   const params = useSearchParams()
   const { getByValue } = useCountries()
-
-  const locationValue = params?.get("locationValue")
-  const startDate = params?.get("startDate")
-  const endDate = params?.get("endDate")
+  const location = params?.get("location")
+  const checkIn = params?.get("checkIn")
+  const checkOut = params?.get("checkOut")
   const guestCount = params?.get("guestCount")
 
   const locationLabel = useMemo(() => {
-    if (locationValue) {
-      return getByValue(locationValue as string)?.label
+    if (location) {
+      return getByValue(location as string)?.label
     }
 
     return "Anywhere"
-  }, [locationValue, getByValue])
+  }, [location, getByValue])
 
   const durationLabel = useMemo(() => {
-    if (startDate && endDate) {
-      const start = new Date(startDate as string)
-      const end = new Date(endDate as string)
+    if (checkIn && checkOut) {
+      const start = new Date(checkIn as string)
+      const end = new Date(checkOut as string)
       let diff = differenceInDays(end, start)
 
       if (diff === 0) {
         diff = 1
       }
 
-      return `${diff} Days`
+      return `${diff} ${diff > 1 ? "Days" : "Day"}`
     }
 
     return "Any Week"
-  }, [startDate, endDate])
+  }, [checkIn, checkOut])
 
   const guestLabel = useMemo(() => {
     if (guestCount) {
@@ -48,9 +47,10 @@ const Search = () => {
 
     return "Add Guests"
   }, [guestCount])
+
   return (
     <div
-      //onClick={searchModal.onOpen}
+      onClick={searchModal.onOpen}
       className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer"
     >
       <div className="flex flex-row items-center justify-between">
@@ -93,7 +93,7 @@ const Search = () => {
           <div
             className="
               p-2 
-              bg-rose-500 
+              bg-neutral-800
               rounded-full 
               text-white
             "

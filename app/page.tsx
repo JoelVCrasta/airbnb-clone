@@ -8,7 +8,7 @@ import EmptyBox from "@/components/EmptyBox"
 import ListingCard from "@/components/ListingCard"
 
 interface HomeProps {
-  searchParams: SearchListingParams
+  searchParams: Promise<SearchListingParams>
 }
 
 const Home = async ({ searchParams }: HomeProps) => {

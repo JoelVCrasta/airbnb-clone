@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Menu } from "lucide-react"
 import useRentModal from "@/app/hooks/useRentModal"
+import Image from "next/image"
 
 interface NavbarProps {
   session: ReturnType<typeof useSession>["data"]
@@ -37,8 +38,15 @@ const Navbar = ({ session }: NavbarProps) => {
     <header className="px-4 mx-auto sm:px-6 lg:px-8 border-b-[1px] border-b-gray-200">
       <div className="flex items-center justify-between h-16 lg:h-20">
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <Link href="/" title="stayeo" className="flex">
+        <div className="flex-shrink-">
+          <Link href="/" title="stayeo" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={30}
+              height={0}
+              className="mr-2 aspect-square object-contain"
+            />
             <p className="text-3xl font-normal">fakebnb</p>
           </Link>
         </div>
@@ -98,7 +106,12 @@ const Navbar = ({ session }: NavbarProps) => {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={() => signOut()}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    signOut()
+                    router.refresh()
+                  }}
+                >
                   Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
